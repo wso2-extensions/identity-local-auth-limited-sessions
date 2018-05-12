@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+    <link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/>
+    <link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/>
+    <title>SessionCountAuthenticatorConstants.java</title>
+    <link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/>
+    <script type="text/javascript" src="../jacoco-resources/prettify.js"></script>
+</head>
+<body onload="window['PR_TAB_WIDTH']=4;prettyPrint()">
+<div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html"
+                                                              class="el_session">Sessions</a></span><a
+        href="../index.html" class="el_report">WSO2 Carbon - Session Count Identity Application Authenticator</a> &gt;
+    <a href="index.source.html" class="el_package">org.wso2.carbon.identity.application.authenticator.sessionauth</a>
+    &gt; <span class="el_source">SessionCountAuthenticatorConstants.java</span></div>
+<h1>SessionCountAuthenticatorConstants.java</h1>
+<pre class="source lang-java linenums">/*
+ * Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the &quot;License&quot;); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+package org.wso2.carbon.identity.application.authenticator.sessionauth;
+
+/**
+ * Constants used by the SessionCountAuthenticator
+ */
+<span class="nc" id="L23">public abstract class SessionCountAuthenticatorConstants {</span>
+
+    public static final String AUTHENTICATOR_NAME = &quot;SessionCountAuthenticator&quot;;
+    public static final String AUTHENTICATOR_FRIENDLY_NAME = &quot;sessionCount&quot;;
+    public static final String USERNAME_TAG = &quot;username&quot;;
+    public static final String SESSION_LIMIT_TAG = &quot;sessionLimit&quot;;
+    public static final String USER_STORE_TAG = &quot;userstoreDomain&quot;;
+    public static final String CONTENT_TYPE_TAG = &quot;Content-type&quot;;
+    public static final String AUTH_TYPE_KEY = &quot;Basic &quot;;
+    public static final String ATTRIBUTE_SEPARATOR = &quot;:&quot;;
+    public static final String ACTIVE_SESSION_TABLE_NAME = &quot;ORG_WSO2_IS_ANALYTICS_STREAM_ACTIVESESSIONS&quot;;
+    public static final String TABLE_NAME_TAG = &quot;tableName&quot;;
+    public static final String QUERY_TAG = &quot;query&quot;;
+    public static final String COUNT_TAG = &quot;count&quot;;
+    public static final String START_TAG = &quot;start&quot;;
+    public static final String TENANT_DOMAIN_TAG = &quot;tenantDomain&quot;;
+    public static final String AND_TAG = &quot; AND &quot;;
+    public static final String SESSION_TERMINATION_SERVLET_INPUT = &quot;sessionTerminationDataInput&quot;;
+    public static final int START_INDEX = 0;
+    public static final int SESSION_COUNT_MAX = 100;
+    public static final String LOGIN_STANDARD_PAGE = &quot;authenticationendpoint/login.do&quot;;
+    public static final String SESSION_TERMINATION_ENFORCER_PAGE = &quot;sessioncountauthenticationendpoint/Session.jsp&quot;;
+    public static final String AUTHENTICATOR_TYPE = &quot;LOCAL&quot;;
+    public static final String USERNAME_CONFIG_NAME = &quot;SessionBasedValidation.Username&quot;;
+    public static final String PASSWORD_CONFIG_NAME = &quot;SessionBasedValidation.Password&quot;;
+    public static final String TABLE_SEARCH_CONFIG_NAMES = &quot;SessionBasedValidation.TableSearchURL&quot;;
+
+}
+</pre>
+<div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>
+</div>
+</body>
+</html>

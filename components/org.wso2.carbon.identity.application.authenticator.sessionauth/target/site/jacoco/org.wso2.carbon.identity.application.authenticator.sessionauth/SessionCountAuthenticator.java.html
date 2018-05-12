@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+    <link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/>
+    <link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/>
+    <title>SessionCountAuthenticator.java</title>
+    <link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/>
+    <script type="text/javascript" src="../jacoco-resources/prettify.js"></script>
+</head>
+<body onload="window['PR_TAB_WIDTH']=4;prettyPrint()">
+<div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html"
+                                                              class="el_session">Sessions</a></span><a
+        href="../index.html" class="el_report">WSO2 Carbon - Session Count Identity Application Authenticator</a> &gt;
+    <a href="index.source.html" class="el_package">org.wso2.carbon.identity.application.authenticator.sessionauth</a>
+    &gt; <span class="el_source">SessionCountAuthenticator.java</span></div>
+<h1>SessionCountAuthenticator.java</h1>
+<pre class="source lang-java linenums">/*
+ * Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the &quot;License&quot;); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+package org.wso2.carbon.identity.application.authenticator.sessionauth;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.ssl.Base64;
+import org.json.JSONArray;
+import org.wso2.carbon.identity.application.authentication.framework.AbstractApplicationAuthenticator;
+import org.wso2.carbon.identity.application.authentication.framework.AuthenticatorFlowStatus;
+import org.wso2.carbon.identity.application.authentication.framework.LocalApplicationAuthenticator;
+import org.wso2.carbon.identity.application.authentication.framework.config.model.StepConfig;
+import org.wso2.carbon.identity.application.authentication.framework.context.AuthenticationContext;
+import org.wso2.carbon.identity.application.authentication.framework.exception.AuthenticationFailedException;
+import org.wso2.carbon.identity.application.authentication.framework.model.AuthenticatedUser;
+import org.wso2.carbon.identity.application.authentication.framework.services.SessionManagementService;
+import org.wso2.carbon.identity.application.authentication.framework.util.FrameworkUtils;
+import org.wso2.carbon.identity.application.authenticator.sessionauth.exception.SessionValidationException;
+import org.wso2.carbon.identity.application.authenticator.sessionauth.util.AuthenticatorUtil;
+
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import static java.lang.Integer.parseInt;
+import static org.wso2.carbon.identity.application.authenticator.sessionauth.util.AuthenticatorUtil.getSessionDetails;
+
+/**
+ * Session count based authenticator
+ */
+<span class="fc" id="L52">public class SessionCountAuthenticator extends AbstractApplicationAuthenticator</span>
+        implements LocalApplicationAuthenticator {
+
+    private static final long serialVersionUID = 1819664539416029245L;
+<span class="fc" id="L56">    private static final Log log = LogFactory.getLog(SessionCountAuthenticator.class);</span>
+
+    @Override
+    public boolean canHandle(HttpServletRequest request) {
+
+<span class="nc" id="L61">        return true;</span>
+    }
+
+    @Override
+    public AuthenticatorFlowStatus process(HttpServletRequest request,
+                                           HttpServletResponse response, AuthenticationContext context)
+            throws AuthenticationFailedException {
+
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">        if (context.isLogoutRequest()) {</span>
+<span class="fc" id="L70">            return AuthenticatorFlowStatus.SUCCESS_COMPLETED;</span>
+        }
+<span class="nc bnc" id="L72"
+      title="All 2 branches missed.">        if (StringUtils.isNotEmpty(request.getParameter(</span>
+                SessionCountAuthenticatorConstants.SESSION_TERMINATION_SERVLET_INPUT))) {
+            try {
+<span class="nc" id="L75">                processAuthenticationResponse(request, response, context);</span>
+<span class="nc" id="L76">            } catch (SessionValidationException e) {</span>
+<span class="nc" id="L77">                context.setRetrying(true);</span>
+<span class="nc" id="L78">                context.setCurrentAuthenticator(getName());</span>
+<span class="nc" id="L79">                return initiateAuthRequest(response, context,</span>
+                        &quot;Exception occurred in session termination process. Please try again&quot;);
+<span class="nc" id="L81">            }</span>
+<span class="nc" id="L82">            return AuthenticatorFlowStatus.SUCCESS_COMPLETED;</span>
+        } else {
+<span class="nc" id="L84">            return initiateAuthRequest(response, context, null);</span>
+        }
+    }
+
+    /**
+     * This will gather information on exiting sessions of the current user trying to execute the authenticator and
+     * store them as metadata and redirect user to page to select sessions to termination
+     *
+     * @param response     the response
+     * @param context      the authentication context
+     * @param errorMessage contains error message of previous attempt if this is a retry attempt.
+     */
+    private AuthenticatorFlowStatus initiateAuthRequest(HttpServletResponse response, AuthenticationContext context,
+                                                        String errorMessage) throws AuthenticationFailedException {
+
+        //Identifying the authenticated user from the previous step
+<span class="fc" id="L100">        StepConfig stepConfig = context.getSequenceConfig().getStepMap().get(context.getCurrentStep() - 1);</span>
+<span class="fc" id="L101">        AuthenticatedUser authenticatedUser = stepConfig.getAuthenticatedUser();</span>
+
+<span class="fc bfc" id="L103" title="All 2 branches covered.">        if (authenticatedUser == null) {</span>
+<span class="fc" id="L104">            throw new AuthenticationFailedException(&quot;Authentication failed!. Failed to identify the user&quot;);</span>
+        }
+
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">        if (stepConfig.getAuthenticatedAutenticator().getApplicationAuthenticator() instanceof</span>
+                LocalApplicationAuthenticator) {
+<span class="nc" id="L109">            String loginPage = AuthenticatorUtil.getLoginPageURL();</span>
+            try {
+<span class="nc" id="L111">                JSONArray sessionMetaData = getSessionDetails(authenticatedUser);</span>
+<span class="nc"
+      id="L112">                int sessionLimit = getAllowedSessionLimit(context, sessionMetaData.length());</span>
+<span class="nc" id="L113">                byte[] encodedBytes = Base64.encodeBase64(sessionMetaData.toString().getBytes(Charset.forName(</span>
+<span class="nc" id="L114">                        StandardCharsets.UTF_8.name())));</span>
+<span class="nc" id="L115">                String queryParams = FrameworkUtils.getQueryStringWithFrameworkContextId(context.getQueryParams(),</span>
+<span class="nc"
+      id="L116">                        context.getCallerSessionKey(), context.getContextIdentifier());</span>
+<span class="nc" id="L117">                String retryParam = &quot;&quot;;</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">                if (context.isRetrying()) {</span>
+<span class="nc" id="L119">                    retryParam = &quot;&amp;authFailure=true&amp;authFailureMsg=&quot; + errorMessage;</span>
+                }
+<span class="nc" id="L121">                String encodedUrl = loginPage + (&quot;?&quot; + queryParams + &quot;&amp;sessionData=&quot; + new String(encodedBytes,</span>
+<span class="nc" id="L122">                        StandardCharsets.UTF_8.name()) +</span>
+<span class="nc" id="L123">                        &quot;&amp;sessionLimit=&quot; + String.valueOf(sessionMetaData.length())</span>
+<span class="nc"
+      id="L124">                        + &quot;&amp;terminateCount=&quot; + String.valueOf(sessionLimit))</span>
+<span class="nc" id="L125">                        + &quot;&amp;authenticators=&quot; + getName() + &quot;:&quot; + SessionCountAuthenticatorConstants.AUTHENTICATOR_TYPE</span>
+                        + retryParam;
+<span class="nc" id="L127">                response.sendRedirect(encodedUrl);</span>
+<span class="nc" id="L128">                context.setCurrentAuthenticator(getName());</span>
+<span class="nc" id="L129">                return AuthenticatorFlowStatus.INCOMPLETE;</span>
+
+<span class="nc" id="L131">            } catch (IOException e) {</span>
+<span class="nc" id="L132">                throw new AuthenticationFailedException(&quot;Problem occurred in redirecting to the session termination page&quot;, e);</span>
+<span class="nc" id="L133">            } catch (SessionValidationException e) {</span>
+<span class="nc" id="L134">                throw new AuthenticationFailedException(&quot;Failed to retrieve session metadata&quot;, e);</span>
+            }
+        }
+<span class="nc" id="L137">        return AuthenticatorFlowStatus.SUCCESS_COMPLETED;</span>
+    }
+
+    /**
+     * Method to retrieve the number of allowed sessions defined by the admin.
+     *
+     * @param context            Context object
+     * @param activeSessionCount current active session Limit
+     * @return integer indicating the allowed session limit
+     */
+    private int getAllowedSessionLimit(AuthenticationContext context, int activeSessionCount) {
+
+<span class="nc" id="L149">        int sessionLimit = activeSessionCount - 1;</span>
+<span class="nc" id="L150">        Object sessionLimitObject = context.getProperty(SessionCountAuthenticatorConstants.SESSION_LIMIT_TAG);</span>
+
+<span class="nc bnc" id="L152" title="All 2 branches missed.">        if (sessionLimitObject != null) {</span>
+            try {
+<span class="nc" id="L154">                sessionLimit = parseInt(sessionLimitObject.toString());</span>
+<span class="nc" id="L155">            } catch (NumberFormatException e) {</span>
+<span class="nc" id="L156">                log.error(&quot;Invalid string value found as session Limit&quot;, e);</span>
+<span class="nc" id="L157">            }</span>
+        }
+<span class="nc bnc" id="L159" title="All 2 branches missed.">        if (sessionLimit &lt; 0) {</span>
+<span class="nc" id="L160">            return 0;</span>
+        }
+<span class="nc" id="L162">        return sessionLimit;</span>
+    }
+
+    @Override
+    protected void processAuthenticationResponse(HttpServletRequest request,
+                                                 HttpServletResponse response, AuthenticationContext context)
+            throws AuthenticationFailedException {
+
+<span class="nc" id="L170">        int closedSessionCount = 0;</span>
+<span class="nc" id="L171">        int sessionLimit = parseInt(request.getParameter(&quot;sessionLimit&quot;));</span>
+<span class="nc" id="L172">        int activeSessionCount = parseInt(request.getParameter(&quot;activeSessionCount&quot;));</span>
+<span class="nc"
+      id="L173">        SessionManagementService sessionManagementService = new SessionManagementService();</span>
+<span class="nc" id="L174">        ArrayList&lt;String&gt; sessionIDList = getSelectedSessionIDs(request.getParameterMap());</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">        for (String sessionId : sessionIDList) {</span>
+<span class="nc" id="L176">            boolean isRemoved = sessionManagementService.removeSession(sessionId);</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">            if (isRemoved) {</span>
+<span class="nc" id="L178">                closedSessionCount++;</span>
+<span class="nc" id="L179">                log.info(&quot;Session with Session ID :&quot; + sessionId + &quot; removed as requested.&quot;);</span>
+            }
+<span class="nc" id="L181">        }</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">        if (activeSessionCount - closedSessionCount &gt;= sessionLimit) {</span>
+
+<span class="nc" id="L184">            throw new SessionValidationException(&quot;Terminated session amount is not sufficient to continue&quot;);</span>
+        }
+
+<span class="nc" id="L187">    }</span>
+
+    @Override
+    protected boolean retryAuthenticationEnabled() {
+
+<span class="nc" id="L192">        return true;</span>
+    }
+
+    @Override
+    public String getContextIdentifier(HttpServletRequest request) {
+
+<span class="nc" id="L198">        return request.getParameter(&quot;sessionDataKey&quot;);</span>
+    }
+
+    @Override
+    public String getFriendlyName() {
+
+<span class="fc" id="L204">        return SessionCountAuthenticatorConstants.AUTHENTICATOR_FRIENDLY_NAME;</span>
+    }
+
+    @Override
+    public String getName() {
+
+<span class="fc" id="L210">        return SessionCountAuthenticatorConstants.AUTHENTICATOR_NAME;</span>
+    }
+
+    private ArrayList&lt;String&gt; getSelectedSessionIDs(Map&lt;String, String[]&gt; parameterMap) {
+
+<span class="nc" id="L215">        Set&lt;String&gt; keySet = parameterMap.keySet();</span>
+<span class="nc" id="L216">        ArrayList&lt;String&gt; sessionIdList = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L217" title="All 2 branches missed.">        for (Object key : keySet) {</span>
+<span class="nc" id="L218">            sessionIdList.add(key.toString());</span>
+<span class="nc" id="L219">        }</span>
+<span class="nc" id="L220">        sessionIdList.remove(&quot;sessionTerminationDataInput&quot;);</span>
+<span class="nc" id="L221">        sessionIdList.remove(&quot;sessionDataKey&quot;);</span>
+<span class="nc" id="L222">        sessionIdList.remove(&quot;sessionList&quot;);</span>
+<span class="nc" id="L223">        sessionIdList.remove(&quot;activeSessionCount&quot;);</span>
+<span class="nc" id="L224">        sessionIdList.remove(&quot;sessionLimit&quot;);</span>
+<span class="nc bnc" id="L225"
+      title="All 2 branches missed.">        if (sessionIdList.contains(&quot;name&quot;)) {</span>
+<span class="nc" id="L226">            sessionIdList.remove(&quot;name&quot;);</span>
+        }
+<span class="nc" id="L228">        return sessionIdList;</span>
+    }
+
+}
+</pre>
+<div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>
+</div>
+</body>
+</html>

@@ -1,0 +1,6 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+WSO2 Carbon - Session Count Identity Application Authenticator,org.wso2.carbon.identity.application.authenticator.sessionauth,SessionCountAuthenticator,289,42,20,4,72,11,17,7,6,6
+WSO2 Carbon - Session Count Identity Application Authenticator,org.wso2.carbon.identity.application.authenticator.sessionauth,SessionCountAuthenticatorConstants,3,0,0,0,1,0,1,0,1,0
+WSO2 Carbon - Session Count Identity Application Authenticator,org.wso2.carbon.identity.application.authenticator.sessionauth.internal,SessionAuthenticatorServiceComponent,39,0,4,0,13,0,6,0,4,0
+WSO2 Carbon - Session Count Identity Application Authenticator,org.wso2.carbon.identity.application.authenticator.sessionauth.exception,SessionValidationException,4,0,0,0,2,0,1,0,1,0
+WSO2 Carbon - Session Count Identity Application Authenticator,org.wso2.carbon.identity.application.authenticator.sessionauth.util,AuthenticatorUtil,124,108,4,0,26,17,4,5,2,5

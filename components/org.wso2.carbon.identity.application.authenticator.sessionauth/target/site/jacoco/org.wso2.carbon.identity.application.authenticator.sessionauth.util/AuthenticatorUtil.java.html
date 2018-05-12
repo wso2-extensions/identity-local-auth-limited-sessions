@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+    <link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/>
+    <link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/>
+    <title>AuthenticatorUtil.java</title>
+    <link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/>
+    <script type="text/javascript" src="../jacoco-resources/prettify.js"></script>
+</head>
+<body onload="window['PR_TAB_WIDTH']=4;prettyPrint()">
+<div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html"
+                                                              class="el_session">Sessions</a></span><a
+        href="../index.html" class="el_report">WSO2 Carbon - Session Count Identity Application Authenticator</a> &gt;
+    <a href="index.source.html"
+       class="el_package">org.wso2.carbon.identity.application.authenticator.sessionauth.util</a> &gt; <span
+            class="el_source">AuthenticatorUtil.java</span></div>
+<h1>AuthenticatorUtil.java</h1>
+<pre class="source lang-java linenums">/*
+ * Copyright (c) 2018, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the &quot;License&quot;); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
+package org.wso2.carbon.identity.application.authenticator.sessionauth.util;
+
+import org.apache.axis2.transport.http.HTTPConstants;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.ssl.Base64;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.wso2.carbon.identity.application.authentication.framework.config.ConfigurationFacade;
+import org.wso2.carbon.identity.application.authentication.framework.model.AuthenticatedUser;
+import org.wso2.carbon.identity.application.authenticator.sessionauth.SessionCountAuthenticatorConstants;
+import org.wso2.carbon.identity.application.authenticator.sessionauth.exception.SessionValidationException;
+import org.wso2.carbon.identity.core.util.IdentityUtil;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import javax.net.ssl.SSLHandshakeException;
+
+/**
+ * TODO:Class level comment
+ */
+<span class="nc" id="L50">public class AuthenticatorUtil {</span>
+
+
+<span class="fc" id="L53">    private static final Log log = LogFactory.getLog(AuthenticatorUtil.class);</span>
+
+    /**
+     * Method to retrieve session data from session data source
+     *
+     * @param authenticatedUser AuthenticatedUser object that represent the user
+     * @return JSON array with each element describing active session
+     * @throws IOException                When it fails to read response from the REST call
+     * @throws SessionValidationException when REST response is not in state 200
+     */
+    public static JSONArray getSessionDetails(AuthenticatedUser authenticatedUser) throws
+            IOException, SessionValidationException {
+
+<span class="fc" id="L66">        HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();</span>
+<span class="fc" id="L67">        HttpClient httpClient = httpClientBuilder.build();</span>
+<span class="nc" id="L68">        HttpPost httpPost = createHttpRequest(authenticatedUser);</span>
+        HttpResponse httpResponse;
+        JSONArray responseJsonArray;
+<span class="nc" id="L71">        httpResponse = httpClient.execute(httpPost);</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">        if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {</span>
+            BufferedReader bufferedReader;
+<span class="nc"
+      id="L74">            bufferedReader = new BufferedReader(new InputStreamReader(httpResponse.getEntity()</span>
+<span class="nc" id="L75">                    .getContent(),</span>
+<span class="nc" id="L76">                    StandardCharsets.UTF_8.name()));</span>
+<span class="nc" id="L77">            StringBuilder responseResult = new StringBuilder();</span>
+            String line;
+<span class="nc bnc" id="L79" title="All 2 branches missed.">            while ((line = bufferedReader.readLine()) != null) {</span>
+<span class="nc" id="L80">                responseResult.append(line);</span>
+            }
+<span class="nc" id="L82">            responseJsonArray = new JSONArray(responseResult.toString());</span>
+<span class="nc" id="L83">            bufferedReader.close();</span>
+<span class="nc" id="L84">        } else {</span>
+<span class="nc" id="L85">            throw new SessionValidationException(&quot;Failed to retrieve data from endpoint. Error code :&quot; +</span>
+<span class="nc" id="L86">                    httpResponse.getStatusLine().getStatusCode());</span>
+        }
+<span class="nc" id="L88">        return responseJsonArray;</span>
+    }
+
+    /**
+     * Method to create HTTP Request
+     *
+     * @param authenticatedUser AuthenticatedUser object for the user
+     * @return HttpPost request object
+     */
+    private static HttpPost createHttpRequest(AuthenticatedUser authenticatedUser) {
+
+<span class="fc" id="L99">        JSONObject requestData = new JSONObject();</span>
+<span class="fc" id="L100">        requestData.put(SessionCountAuthenticatorConstants.TABLE_NAME_TAG,</span>
+                SessionCountAuthenticatorConstants.ACTIVE_SESSION_TABLE_NAME);
+<span class="fc" id="L102">        requestData.put(SessionCountAuthenticatorConstants.QUERY_TAG,</span>
+<span class="fc" id="L103">                getQuery(authenticatedUser.getTenantDomain(), authenticatedUser.getUserName(), authenticatedUser</span>
+<span class="fc" id="L104">                        .getUserStoreDomain()));</span>
+<span class="fc" id="L105">        requestData.put(SessionCountAuthenticatorConstants.START_TAG, SessionCountAuthenticatorConstants.START_INDEX);</span>
+<span class="fc" id="L106">        requestData.put(SessionCountAuthenticatorConstants.COUNT_TAG,</span>
+                SessionCountAuthenticatorConstants.SESSION_COUNT_MAX);
+<span class="fc" id="L108">        StringEntity entity = new StringEntity(requestData.toString(), ContentType.APPLICATION_JSON);</span>
+<span class="nc" id="L109">        HttpPost httpRequest = new HttpPost(IdentityUtil.getProperty(SessionCountAuthenticatorConstants</span>
+                .TABLE_SEARCH_CONFIG_NAMES));
+<span class="nc" id="L111">        String toEncode = IdentityUtil.getProperty(SessionCountAuthenticatorConstants.USERNAME_CONFIG_NAME)</span>
+                + SessionCountAuthenticatorConstants.ATTRIBUTE_SEPARATOR
+<span class="nc" id="L113">                + IdentityUtil.getProperty(SessionCountAuthenticatorConstants.PASSWORD_CONFIG_NAME);</span>
+<span class="nc" id="L114">        byte[] encoding = Base64.encodeBase64(toEncode.getBytes(Charset.forName(StandardCharsets.UTF_8.name())));</span>
+<span class="nc" id="L115">        String authHeader = new String(encoding, Charset.defaultCharset());</span>
+        //Adding headers to request
+<span class="nc" id="L117">        httpRequest.addHeader(HTTPConstants.HEADER_AUTHORIZATION, SessionCountAuthenticatorConstants.AUTH_TYPE_KEY +</span>
+                authHeader);
+<span class="nc" id="L119">        httpRequest.addHeader(SessionCountAuthenticatorConstants.CONTENT_TYPE_TAG, &quot;application/json&quot;);</span>
+<span class="nc" id="L120">        httpRequest.setEntity(entity);</span>
+<span class="nc" id="L121">        return httpRequest;</span>
+    }
+
+    public static String getQuery(String tenantDomain, String username, String userStore) {
+
+<span class="fc" id="L126">        return</span>
+                SessionCountAuthenticatorConstants.TENANT_DOMAIN_TAG +
+                        SessionCountAuthenticatorConstants.ATTRIBUTE_SEPARATOR +
+                        tenantDomain +
+                        SessionCountAuthenticatorConstants.AND_TAG +
+                        SessionCountAuthenticatorConstants.USERNAME_TAG +
+                        SessionCountAuthenticatorConstants.ATTRIBUTE_SEPARATOR +
+                        username +
+                        SessionCountAuthenticatorConstants.AND_TAG +
+                        SessionCountAuthenticatorConstants.USER_STORE_TAG +
+                        SessionCountAuthenticatorConstants.ATTRIBUTE_SEPARATOR +
+                        userStore;
+    }
+
+    /**
+     * Method used for adding authentication header for httpMethod.
+     *
+     * @param httpMethod httpMethod that needs auth header to be added
+     * @param username   username of user
+     * @param password   password of the user
+     */
+    public static HttpPost setAuthorizationHeader(HttpPost httpMethod, String username, String password) {
+
+<span class="fc" id="L149">        String toEncode = username + SessionCountAuthenticatorConstants.ATTRIBUTE_SEPARATOR + password;</span>
+<span class="fc" id="L150">        byte[] encoding = org.apache.commons.codec.binary.Base64.encodeBase64(toEncode.getBytes(Charset.forName(StandardCharsets.UTF_8.name())));</span>
+<span class="fc" id="L151">        String authHeader = new String(encoding, Charset.defaultCharset());</span>
+<span class="fc" id="L152">        httpMethod.addHeader(HTTPConstants.HEADER_AUTHORIZATION,</span>
+                SessionCountAuthenticatorConstants.AUTH_TYPE_KEY + authHeader);
+<span class="fc" id="L154">        return httpMethod;</span>
+    }
+
+    /**
+     * Method to create the query to pass to get session details
+     *
+     * @param tenantDomain tenant domain the user belong to
+     * @param username     username of the user
+     * @param userStore    userstore of the user
+     * @return Query string
+     */
+
+    /**
+     * Method to retrieve custom login page for the authenticator
+     *
+     * @return custom login page of authenticator
+     */
+    public static String getLoginPageURL() {
+
+<span class="nc"
+      id="L173">        return ConfigurationFacade.getInstance().getAuthenticationEndpointURL().replace(</span>
+                SessionCountAuthenticatorConstants.LOGIN_STANDARD_PAGE,
+                SessionCountAuthenticatorConstants.SESSION_TERMINATION_ENFORCER_PAGE);
+    }
+
+}
+</pre>
+<div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>
+</div>
+</body>
+</html>

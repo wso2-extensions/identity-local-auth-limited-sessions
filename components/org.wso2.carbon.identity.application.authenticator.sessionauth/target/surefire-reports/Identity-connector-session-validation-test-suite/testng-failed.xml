@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite guice-stage="DEVELOPMENT" verbose="0" name="Failed suite [Identity-connector-session-validation-test-suite]">
+    <test name="session-validation-authenticator-all">
+        <classes>
+            <class name="org.wso2.carbon.identity.application.authenticator.sessionauth.test.AuthenticatorUtilTest"/>
+            <class name="org.wso2.carbon.identity.application.authenticator.sessionauth.test.AuthenticatorTest"/>
+        </classes>
+    </test> <!-- session-validation-authenticator-all -->
+</suite> <!-- Failed suite [Identity-connector-session-validation-test-suite] -->
