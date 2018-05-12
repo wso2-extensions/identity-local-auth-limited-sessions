@@ -1,1 +1,1 @@
-# Authenticator for validating active session count
+# identity-local-auth-limited-sessions
