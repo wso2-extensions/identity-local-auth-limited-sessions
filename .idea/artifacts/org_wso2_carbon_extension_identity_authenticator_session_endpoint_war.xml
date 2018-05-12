@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="org.wso2.carbon.extension.identity.authenticator.session.endpoint:war">
-    <output-path>$PROJECT_DIR$/components/org.wso2.carbon.identity.application.authentication-endpoint/target</output-path>
-    <root id="archive" name="sessioncountauthenticationendpoint.war">
-      <element id="artifact" artifact-name="org.wso2.carbon.extension.identity.authenticator.session.endpoint:war exploded" />
-    </root>
-  </artifact>
-</component>
