@@ -196,7 +196,6 @@ public class SessionCountAuthenticator extends AbstractApplicationAuthenticator
 
             throw new SessionValidationException("Terminated session amount is not sufficient to continue");
         }
-
     }
 
     @Override
@@ -246,5 +245,4 @@ public class SessionCountAuthenticator extends AbstractApplicationAuthenticator
         }
         return sessionIdList;
     }
-
 }

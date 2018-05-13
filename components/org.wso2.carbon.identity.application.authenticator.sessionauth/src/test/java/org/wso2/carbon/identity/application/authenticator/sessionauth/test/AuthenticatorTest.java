@@ -71,7 +71,6 @@ public class AuthenticatorTest {
     public void setup() {
 
         initMocks(this);
-
     }
 
     //method to test getName function
@@ -111,7 +110,6 @@ public class AuthenticatorTest {
         when(sequenceConfig.getStepMap()).thenReturn(stepMap);
         when(stepConfig.getAuthenticatedUser()).thenReturn(authenticatedUserNull);
         sessionCountAuthenticator.process(request, response, context);
-
     }
 
     //testing when initial request is called and authenticated user is not null. Null pointer exception is expected
@@ -130,7 +128,6 @@ public class AuthenticatorTest {
         when(stepConfig.getAuthenticatedAutenticator()).thenReturn(authenticatorConfig);
         when(authenticatorConfig.getApplicationAuthenticator()).thenReturn(localApplicationAuthenticator);
         sessionCountAuthenticator.process(request, response, context);
-
     }
 
 }

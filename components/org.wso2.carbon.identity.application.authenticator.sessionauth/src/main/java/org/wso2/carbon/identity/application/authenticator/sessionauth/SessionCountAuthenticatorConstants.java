@@ -56,5 +56,4 @@ public abstract class SessionCountAuthenticatorConstants {
     public static final String ACTIVE_SESSION_COUNT_TAG = "activeSessionCount";
     public static final String SESSION_LIMIT_TAG = "sessionLimit";
     public static final String NAME_TAG = "name";
-
 }

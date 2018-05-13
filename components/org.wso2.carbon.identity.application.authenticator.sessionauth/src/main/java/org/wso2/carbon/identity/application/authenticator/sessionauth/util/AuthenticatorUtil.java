@@ -176,5 +176,4 @@ public class AuthenticatorUtil {
                 SessionCountAuthenticatorConstants.LOGIN_STANDARD_PAGE,
                 SessionCountAuthenticatorConstants.SESSION_TERMINATION_ENFORCER_PAGE);
     }
-
 }

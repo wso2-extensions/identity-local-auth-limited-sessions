@@ -45,7 +45,6 @@ public class SessionAuthenticatorServiceComponent {
             SessionCountAuthenticator sessionCountAuthenticator = new SessionCountAuthenticator();
             ctxt.getBundleContext().registerService(ApplicationAuthenticator.class.getName(),
                     sessionCountAuthenticator, null);
-
             if (log.isDebugEnabled()) {
                 log.info("SessionCountAuthenticator bundle is activated");
             }
@@ -61,5 +60,4 @@ public class SessionAuthenticatorServiceComponent {
             log.info("SessionCountAuthenticator bundle is deactivated");
         }
     }
-
 }

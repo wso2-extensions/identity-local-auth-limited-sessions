@@ -60,7 +60,6 @@ public class AuthenticatorUtilTest {
                 TestUtils.getRandomString(10, true, false));
         when(authenticatedUserMock.getUserStoreDomain()).thenReturn(
                 TestUtils.getRandomString(10, true, false));
-
     }
 
     //Testing getQuery utility method
@@ -72,7 +71,6 @@ public class AuthenticatorUtilTest {
         String userStoreDomain = TestUtils.getRandomString(5, true, false);
         String actual = "tenantDomain:" + tenantDomain + " AND username:" + username + " AND userstoreDomain:" + userStoreDomain;
         Assert.assertEquals(actual, AuthenticatorUtil.getQuery(tenantDomain, username, userStoreDomain));
-
     }
 
     //Testing setAuthorization header utility method
@@ -91,7 +89,6 @@ public class AuthenticatorUtilTest {
         Header header = httpPost.getFirstHeader(HTTPConstants.HEADER_AUTHORIZATION);
 
         Assert.assertEquals("Basic " + authHeader, header.getValue());
-
     }
 
     //Test for JSON response is []
