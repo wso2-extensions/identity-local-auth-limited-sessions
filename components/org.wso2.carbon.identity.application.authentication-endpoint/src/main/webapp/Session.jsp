@@ -17,7 +17,6 @@
   --%>
 
 <%@page import="org.apache.commons.ssl.Base64" %>
-
 <%@page import="org.json.JSONArray" %>
 <%@ page import="org.json.JSONObject" %>
 <%@ page import="static java.lang.Math.round" %>
@@ -25,29 +24,21 @@
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.Date" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-
 <%
-    
     request.getSession().invalidate();
-    
     String errorMessage = "Authentication Failed! Please Retry";
     String authenticationFailed = "false";
-    
     byte[] sessionDataEncoded = request.getParameter("sessionData").getBytes("UTF-8");
     String sessionLimit = request.getParameter("sessionLimit");
     String terminateCount = request.getParameter("terminateCount");
     String sessionData = new String(Base64.decodeBase64(sessionDataEncoded));
     JSONArray sessionDataArray = new JSONArray(sessionData);
-
-
 %>
-
 <html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WSO2 Identity Server</title>
-    
     <link rel="icon" href="images/favicon.png" type="image/x-icon"/>
     <link href="libs/bootstrap_3.3.5/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/Roboto.css" rel="stylesheet">
@@ -72,18 +63,13 @@
                 }
             }
         }
-
         function showMore(id, text) {
             var element = document.getElementById("agent" + id);
             element.innerText = text;
         }
     </script>
-
-
 </head>
-
 <body>
-
 <!-- header -->
 <header class="header header-default">
     <div class="container-fluid"><br></div>
@@ -91,16 +77,13 @@
         <div class="pull-left brand float-remove-xs text-center-xs">
             <a href="#">
                 <img src="images/logo-inverse.svg" alt="wso2" title="wso2" class="logo">
-                
                 <h1><em>Identity Server</em></h1>
             </a>
         </div>
     </div>
 </header>
-
 <!-- page content -->
 <div class="container-fluid body-wrapper">
-    
     <div class="row">
         <!-- content -->
         <div class="container col-xs-10 col-sm-9 col-md-9 col-lg-6 col-centered wr-content wr-login col-centered">
@@ -117,7 +100,6 @@
                     %>
                     <div class="alert alert-danger" id="failed-msg">
                         <%=errorMessage%>
-                        
                         <%
                             }
                         %>
@@ -126,7 +108,6 @@
                         You have reached the maximum allowed session limit <%=sessionLimit%>, Please
                         terminate at-least
                         <%=terminateCount%> in order to proceed.
-                    
                     </div>
                     </br>
                     <form id="pin_form" name="pin_form" action="../../commonauth" method="POST">
@@ -135,9 +116,7 @@
                                 <div class="span6">
                                     <!-- Token Pin -->
                                     <div class="control-group">
-                                    
                                     </div>
-                                    
                                     <input type="hidden" name="sessionDataKey"
                                            value='<%=request.getParameter("sessionDataKey")%>'/>
                                     <input type="hidden" name="sessionTerminationDataInput" value="true"/>
@@ -169,27 +148,19 @@
                                                             getJSONFromString(sessionDataArray.get(index).toString());
                                                             sessionDataItemValues =
                                                             getJSONFromString(getStringFromJSON(sessionDataItem,"values"));
-                                                            
                                                             String userAgent = getUserAgent(sessionDataItemValues);
                                                             String userAgentFullText =
                                                             getUserAgentDescription(sessionDataItemValues);
-                                                            
                                                             String startedTime = getStartTime(sessionDataItemValues);
-                                                            
                                                             String sessionId =
                                                             getStringFromJSON(sessionDataItemValues,"sessionId");
-                                                            
                                                             String remoteIp =
                                                             getStringFromJSON(sessionDataItemValues,"remoteIp");
-                                                            
                                                             String lastAccessTime =
                                                             getStringFromJSON(sessionDataItem,"timestamp");
-                                                            
                                                             String lastAccessedTime = getTimeDifference(currentTime,
                                                             Long.parseLong(lastAccessTime));
-                                                            
                                                     %>
-                                            
                                             <tr>
                                                 <td><input type="checkbox"
                                                            name=<%=sessionId%> value=<%=sessionId%>
@@ -214,7 +185,6 @@
                                         </table>
                                         </br></br>
                                         <div align="Center">
-                                            
                                             <button
                                                     onclick="$('#loading').show();" class="btn btn-primary">
                                                 Terminate and Proceed
@@ -225,18 +195,13 @@
                             </div>
                         </div>
                     </form>
-                
                 </div>
             </div>
             <!-- /content -->
-        
         </div>
-        
         <!-- /content/body -->
-    
     </div>
 </div>
-
 <!-- footer -->
 <footer class="footer">
     <div class="container-fluid">
@@ -253,19 +218,25 @@
 <%!
     private static final String DEFAULT_USER_AGENT_NAME = "Unknown";
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm  EEE, d MMM yyyy ");
-    
-    //Method to identify time difference between current time and session creation time
+    //Method to identify time difference between current time and session creation time.
+    //In here current time and started time are given taken as unix time stamp in milliseconds.
     private String getTimeDifference(long currentTime, long startedTime) {
-        
+        //time difference in milliseconds
         long timeDiff = currentTime - startedTime;
         String lastAccessed = null;
         if (timeDiff < 60000) {
+            //60000 = 60 * 1000 (60 seconds) -> if the time is below 60 seconds, time is shown in seconds.
+            // time/1000 gives number of seconds
             lastAccessed = String.valueOf(round(timeDiff / 1000)) +
                     " Seconds ago";
         } else if (timeDiff < 3600000) {
+            //3600000 = 60 * 60 * 100 (60 minutes) -> if the time is below 60 minutes and higher than 60 seconds
+            // time is shown in minutes. time/60000 gives number of minutes
             lastAccessed = String.valueOf(round(timeDiff / 60000)) +
                     " Minutes ago";
         } else if (timeDiff < 86400000) {
+            //86400000 = 24 * 60 * 60 * 100 (24 Hours) -> if the time is below 24 hours and higher than 60 minutes
+            // time is shown in hours. time/3600000 gives number of mins
             lastAccessed = String.valueOf(round(timeDiff / 3600000)) +
                     " Hours ago";
         }
@@ -273,17 +244,14 @@
     }
     //Method to retrieve string from a JSON Object when the key is provided
     private String getStringFromJSON(JSONObject jsonObject, String key) {
-        
         return jsonObject.get(key).toString();
     }
     //Method to create a JSON Object from a string
     private JSONObject getJSONFromString(String jsonString) {
-        
         return new JSONObject(jsonString);
     }
     //Method to retrieve User Agent from the given JSON Object. This will return shortened name
     private String getUserAgent(JSONObject jsonObject) {
-        
         String userAgent = getStringFromJSON(jsonObject, "userAgent");
         if (userAgent.equals("null")) {
             return DEFAULT_USER_AGENT_NAME;
@@ -292,7 +260,6 @@
     }
     //Method to retrieve User Agent from the given JSON Object
     private String getUserAgentDescription(JSONObject jsonObject) {
-        
         String userAgent = getStringFromJSON(jsonObject, "userAgent");
         if (userAgent.equals("null")) {
             return DEFAULT_USER_AGENT_NAME;
@@ -301,7 +268,6 @@
     }
     //Method to retrieve session creation time
     private String getStartTime(JSONObject jsonObject) {
-        
         String timestamp = getStringFromJSON(jsonObject, "startTimestamp");
         Timestamp stamp = new Timestamp(Long.parseLong(timestamp));
         Date date = new Date(stamp.getTime());

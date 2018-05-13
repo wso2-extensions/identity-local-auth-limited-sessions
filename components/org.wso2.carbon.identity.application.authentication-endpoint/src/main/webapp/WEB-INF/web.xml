@@ -26,7 +26,6 @@
             <param-value>false</param-value>
         </init-param>
     </filter>
-
     <filter-mapping>
         <filter-name>HttpHeaderSecurityFilter</filter-name>
         <url-pattern>*</url-pattern>
