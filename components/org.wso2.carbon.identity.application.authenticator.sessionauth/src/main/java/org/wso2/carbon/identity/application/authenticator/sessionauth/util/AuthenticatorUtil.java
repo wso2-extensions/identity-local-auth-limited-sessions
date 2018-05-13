@@ -115,6 +115,14 @@ public class AuthenticatorUtil {
         return httpRequest;
     }
 
+    /**
+     * Method for building the query to get data from the data service
+     *
+     * @param tenantDomain Tenant domain of the user
+     * @param username     Username of the user
+     * @param userStore    User Store of the user
+     * @return Query string
+     */
     public static String getQuery(String tenantDomain, String username, String userStore) {
 
         return

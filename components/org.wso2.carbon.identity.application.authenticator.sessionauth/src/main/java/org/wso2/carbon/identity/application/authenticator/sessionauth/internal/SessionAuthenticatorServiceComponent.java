@@ -26,6 +26,10 @@ import org.osgi.service.component.annotations.Deactivate;
 import org.wso2.carbon.identity.application.authentication.framework.ApplicationAuthenticator;
 import org.wso2.carbon.identity.application.authenticator.sessionauth.SessionCountAuthenticator;
 
+/**
+ * OSGI component for user's current active session count based authenticator
+ */
+
 @Component(
         name = "identity.application.authenticator.sessionauth.component",
         immediate = true

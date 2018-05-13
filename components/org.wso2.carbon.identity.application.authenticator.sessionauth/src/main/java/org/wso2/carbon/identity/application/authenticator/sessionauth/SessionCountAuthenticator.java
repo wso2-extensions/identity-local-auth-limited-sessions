@@ -93,6 +93,8 @@ public class SessionCountAuthenticator extends AbstractApplicationAuthenticator
      * @param response     the response
      * @param context      the authentication context
      * @param errorMessage contains error message of previous attempt if this is a retry attempt.
+     * @throws AuthenticationFailedException when a problem occurred in session termination process, user
+     *                                       authentication process or meta data retrieving process
      */
     private AuthenticatorFlowStatus initiateAuthRequest(HttpServletResponse response, AuthenticationContext context,
                                                         String errorMessage) throws AuthenticationFailedException {
@@ -221,6 +223,12 @@ public class SessionCountAuthenticator extends AbstractApplicationAuthenticator
         return SessionCountAuthenticatorConstants.AUTHENTICATOR_NAME;
     }
 
+    /**
+     * Method for retrieving selected session Ids from the parameter map
+     *
+     * @param parameterMap Map object of parameters
+     * @return Array List of Session ID strings
+     */
     private ArrayList<String> getSelectedSessionIDs(Map<String, String[]> parameterMap) {
 
         Set<String> keySet = parameterMap.keySet();
@@ -228,13 +236,13 @@ public class SessionCountAuthenticator extends AbstractApplicationAuthenticator
         for (Object key : keySet) {
             sessionIdList.add(key.toString());
         }
-        sessionIdList.remove("sessionTerminationDataInput");
-        sessionIdList.remove("sessionDataKey");
-        sessionIdList.remove("sessionList");
-        sessionIdList.remove("activeSessionCount");
-        sessionIdList.remove("sessionLimit");
-        if (sessionIdList.contains("name")) {
-            sessionIdList.remove("name");
+        sessionIdList.remove(SessionCountAuthenticatorConstants.SESSION_TERMINATION_DATA_TAG);
+        sessionIdList.remove(SessionCountAuthenticatorConstants.SESSION_DATA_KEY_TAG);
+        sessionIdList.remove(SessionCountAuthenticatorConstants.SESSION_LIST_TAG);
+        sessionIdList.remove(SessionCountAuthenticatorConstants.ACTIVE_SESSION_COUNT_TAG);
+        sessionIdList.remove(SessionCountAuthenticatorConstants.SESSION_LIMIT_TAG);
+        if (sessionIdList.contains(SessionCountAuthenticatorConstants.NAME_TAG)) {
+            sessionIdList.remove(SessionCountAuthenticatorConstants.NAME_TAG);
         }
         return sessionIdList;
     }

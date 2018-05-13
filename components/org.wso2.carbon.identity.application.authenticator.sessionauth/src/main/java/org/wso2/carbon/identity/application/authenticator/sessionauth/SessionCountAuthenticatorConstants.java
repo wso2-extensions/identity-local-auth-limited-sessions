@@ -29,9 +29,6 @@ public abstract class SessionCountAuthenticatorConstants {
     public static final String AUTHENTICATOR_NAME = "SessionCountAuthenticator";
     public static final String AUTHENTICATOR_FRIENDLY_NAME = "sessionCount";
     public static final String USERNAME_TAG = "username";
-    public static final String SESSION_LIMIT_TAG = "sessionLimit";
-    public static final String ACTIVE_SESSION_COUNT_TAG = "activeSessionCount";
-    public static final String SESSION_DATA_KEY_TAG = "sessionDataKey";
     public static final String USER_STORE_TAG = "userstoreDomain";
     public static final String CONTENT_TYPE_TAG = "Content-type";
     public static final String AUTH_TYPE_KEY = "Basic ";
@@ -52,5 +49,12 @@ public abstract class SessionCountAuthenticatorConstants {
     public static final String USERNAME_CONFIG_NAME = "SessionBasedValidation.Username";
     public static final String PASSWORD_CONFIG_NAME = "SessionBasedValidation.Password";
     public static final String TABLE_SEARCH_CONFIG_NAMES = "SessionBasedValidation.TableSearchURL";
+    //JSP page parameter names
+    public static final String SESSION_TERMINATION_DATA_TAG = "sessionTerminationDataInput";
+    public static final String SESSION_DATA_KEY_TAG = "sessionDataKey";
+    public static final String SESSION_LIST_TAG = "sessionList";
+    public static final String ACTIVE_SESSION_COUNT_TAG = "activeSessionCount";
+    public static final String SESSION_LIMIT_TAG = "sessionLimit";
+    public static final String NAME_TAG = "name";
 
 }
