@@ -188,12 +188,6 @@
                 <version>${org.wso2.carbon.identity.testutil.version}</version>
                 <scope>test</scope>
             </dependency>
-            <dependency>
-                <groupId>org.powermock</groupId>
-                <artifactId>powermock-module-testng</artifactId>
-                <version>1.4.9</version>
-                <scope>test</scope>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -349,6 +343,14 @@
     </build>
 
     <properties>
+        <servlet-api.version>2.5</servlet-api.version>
+        <javax.servelet.jstl.version>1.2</javax.servelet.jstl.version>
+        <commons-codec.wso2.version>1.4.0.wso2v1</commons-codec.wso2.version>
+        <axiom.version>1.2.11-wso2v9</axiom.version>
+        <org.wso2.securevault.version>1.0.0-wso2v2</org.wso2.securevault.version>
+        <commons-codec.version>1.10</commons-codec.version>
+        <maven.scr.plugin.version>1.24.0</maven.scr.plugin.version>
+        <carbon.identity.package.import.version.range>[5.0.0, 6.0.0)</carbon.identity.package.import.version.range>
         <carbon.identity.framework.version>5.11.181</carbon.identity.framework.version>
         <carbon.analytics-common.version>5.0.11</carbon.analytics-common.version>
         <carbon.p2.plugin.version>1.5.3</carbon.p2.plugin.version>
