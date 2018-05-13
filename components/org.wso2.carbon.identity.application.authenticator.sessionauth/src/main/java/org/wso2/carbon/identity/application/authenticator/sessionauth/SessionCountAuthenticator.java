@@ -65,7 +65,6 @@ public class SessionCountAuthenticator extends AbstractApplicationAuthenticator
     public AuthenticatorFlowStatus process(HttpServletRequest request,
                                            HttpServletResponse response, AuthenticationContext context)
             throws AuthenticationFailedException {
-
         if (context.isLogoutRequest()) {
             return AuthenticatorFlowStatus.SUCCESS_COMPLETED;
         }
@@ -102,11 +101,9 @@ public class SessionCountAuthenticator extends AbstractApplicationAuthenticator
         //Identifying the authenticated user from the previous step
         StepConfig stepConfig = context.getSequenceConfig().getStepMap().get(context.getCurrentStep() - 1);
         AuthenticatedUser authenticatedUser = stepConfig.getAuthenticatedUser();
-
         if (authenticatedUser == null) {
             throw new AuthenticationFailedException("Authentication failed!. Failed to identify the user");
         }
-
         if (stepConfig.getAuthenticatedAutenticator().getApplicationAuthenticator() instanceof
                 LocalApplicationAuthenticator) {
             String loginPage = AuthenticatorUtil.getLoginPageURL();
@@ -155,7 +152,6 @@ public class SessionCountAuthenticator extends AbstractApplicationAuthenticator
         // count - 1 will be taken as the session limit. This can be removed or replaced with configuration value
         int sessionLimit = activeSessionCount - 1;
         Object sessionLimitObject = context.getProperty(SessionCountAuthenticatorConstants.SESSION_LIMIT_TAG);
-
         if (sessionLimitObject != null) {
             if (log.isDebugEnabled()) {
                 log.debug("Session Limit defined in the context");
@@ -176,7 +172,6 @@ public class SessionCountAuthenticator extends AbstractApplicationAuthenticator
     protected void processAuthenticationResponse(HttpServletRequest request,
                                                  HttpServletResponse response, AuthenticationContext context)
             throws AuthenticationFailedException {
-
         int closedSessionCount = 0;
         int sessionLimit = parseInt(request.getParameter(SessionCountAuthenticatorConstants.SESSION_LIMIT_TAG));
         int activeSessionCount = parseInt(request.getParameter(SessionCountAuthenticatorConstants

@@ -227,18 +227,15 @@
         if (timeDiff < 60000) {
             //60000 = 60 * 1000 (60 seconds) -> if the time is below 60 seconds, time is shown in seconds.
             // time/1000 gives number of seconds
-            lastAccessed = String.valueOf(round(timeDiff / 1000)) +
-                    " Seconds ago";
+            lastAccessed = String.valueOf(round(timeDiff / 1000)) +" Seconds ago";
         } else if (timeDiff < 3600000) {
             //3600000 = 60 * 60 * 100 (60 minutes) -> if the time is below 60 minutes and higher than 60 seconds
             // time is shown in minutes. time/60000 gives number of minutes
-            lastAccessed = String.valueOf(round(timeDiff / 60000)) +
-                    " Minutes ago";
+            lastAccessed = String.valueOf(round(timeDiff / 60000)) +" Minutes ago";
         } else if (timeDiff < 86400000) {
             //86400000 = 24 * 60 * 60 * 100 (24 Hours) -> if the time is below 24 hours and higher than 60 minutes
             // time is shown in hours. time/3600000 gives number of mins
-            lastAccessed = String.valueOf(round(timeDiff / 3600000)) +
-                    " Hours ago";
+            lastAccessed = String.valueOf(round(timeDiff / 3600000)) +" Hours ago";
         }
         return lastAccessed;
     }

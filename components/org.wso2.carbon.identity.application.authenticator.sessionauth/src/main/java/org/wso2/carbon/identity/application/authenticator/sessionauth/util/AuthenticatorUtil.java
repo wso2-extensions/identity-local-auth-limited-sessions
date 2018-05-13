@@ -74,7 +74,6 @@ public class AuthenticatorUtil {
                 }
                 responseJsonArray = new JSONArray(responseResult.toString());
             }
-
         } else {
             throw new SessionValidationException("Failed to retrieve data from endpoint. Error code :" +
                     httpResponse.getStatusLine().getStatusCode());

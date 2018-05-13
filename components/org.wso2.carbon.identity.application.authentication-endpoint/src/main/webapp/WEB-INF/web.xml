@@ -30,7 +30,6 @@
         <filter-name>HttpHeaderSecurityFilter</filter-name>
         <url-pattern>*</url-pattern>
     </filter-mapping>
-
     <filter>
         <filter-name>ContentTypeBasedCachePreventionFilter</filter-name>
         <filter-class>
