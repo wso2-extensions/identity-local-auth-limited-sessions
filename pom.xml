@@ -18,33 +18,24 @@
   -->
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.wso2</groupId>
         <artifactId>wso2</artifactId>
         <version>1</version>
     </parent>
-
     <groupId>org.wso2.carbon.extension.identity.authenticator</groupId>
     <artifactId>org.wso2.carbon.extension.identity.authenticator.sessionauth</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>WSO2 Carbon - Session Count Identity Application Authenticator Components</name>
-    <description>
-
-    </description>
     <url>http://wso2.org</url>
-
-
     <modules>
         <module>components/org.wso2.carbon.identity.application.authenticator.sessionauth</module>
         <module>components/org.wso2.carbon.identity.application.authentication-endpoint</module>
     </modules>
-
     <dependencyManagement>
         <dependencies>
-            <!-- Carbon Kernel dependencies -->
             <dependency>
                 <groupId>org.wso2.carbon</groupId>
                 <artifactId>org.wso2.carbon.utils</artifactId>
@@ -81,8 +72,6 @@
                 <version>${carbon.kernel.version}</version>
                 <scope>provided</scope>
             </dependency>
-
-            <!-- Identity Framework dependencies -->
             <dependency>
                 <groupId>org.wso2.carbon.identity.framework</groupId>
                 <artifactId>org.wso2.carbon.identity.core</artifactId>
@@ -131,21 +120,10 @@
                 <artifactId>org.wso2.carbon.identity.application.common</artifactId>
                 <version>${carbon.identity.framework.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>org.wso2.carbon.analytics-common</groupId>
                 <artifactId>org.wso2.carbon.event.stream.core</artifactId>
                 <version>${carbon.analytics-common.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-lang.wso2</groupId>
-                <artifactId>commons-lang</artifactId>
-                <version>${commons-lang.wso2.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-codec.wso2</groupId>
-                <artifactId>commons-codec</artifactId>
-                <version>${commons-codec.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jacoco</groupId>
@@ -188,9 +166,62 @@
                 <version>${org.wso2.carbon.identity.testutil.version}</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>commons-httpclient.wso2</groupId>
+                <artifactId>commons-httpclient</artifactId>
+                <version>${commons-httpclient.wso2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.json.wso2</groupId>
+                <artifactId>json</artifactId>
+                <version>${json.wso2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-lang.wso2</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>${commons-lang.wso2.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>servlet-api</artifactId>
+                <version>${servlet-api.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>jstl</artifactId>
+                <version>${javax.servelet.jstl.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons-codec.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-codec.wso2</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons-codec.wso2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.ws.commons.axiom</groupId>
+                <artifactId>axiom-api</artifactId>
+                <version>${axiom.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.securevault</groupId>
+                <artifactId>org.wso2.securevault</artifactId>
+                <version>${org.wso2.securevault.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-lang</groupId>
+                        <artifactId>commons-lang</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
         </dependencies>
     </dependencyManagement>
-
     <repositories>
         <repository>
             <id>wso2-nexus</id>
@@ -202,7 +233,6 @@
                 <checksumPolicy>ignore</checksumPolicy>
             </releases>
         </repository>
-
         <repository>
             <id>wso2.releases</id>
             <name>WSO2 internal Repository</name>
@@ -213,7 +243,6 @@
                 <checksumPolicy>ignore</checksumPolicy>
             </releases>
         </repository>
-
         <repository>
             <id>wso2.snapshots</id>
             <name>Apache Snapshot Repository</name>
@@ -226,9 +255,7 @@
                 <enabled>false</enabled>
             </releases>
         </repository>
-
     </repositories>
-
     <pluginRepositories>
         <pluginRepository>
             <id>wso2.releases</id>
@@ -240,7 +267,6 @@
                 <checksumPolicy>ignore</checksumPolicy>
             </releases>
         </pluginRepository>
-
         <pluginRepository>
             <id>wso2.snapshots</id>
             <name>WSO2 Snapshot Repository</name>
@@ -264,7 +290,6 @@
             </releases>
         </pluginRepository>
     </pluginRepositories>
-
     <build>
         <pluginManagement>
             <plugins>
@@ -331,8 +356,8 @@
                 <inherited>true</inherited>
                 <configuration>
                     <encoding>UTF-8</encoding>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>${source.version}</source>
+                    <target>${target.version}</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -341,7 +366,6 @@
             </plugin>
         </plugins>
     </build>
-
     <properties>
         <servlet-api.version>2.5</servlet-api.version>
         <javax.servelet.jstl.version>1.2</javax.servelet.jstl.version>
@@ -383,6 +407,15 @@
         <org.osgi.framework.version.range>[1.7,2)</org.osgi.framework.version.range>
         <org.osgi.service.component.version.range>[1.2,2)</org.osgi.service.component.version.range>
         <org.wso2.carbon.identity.version.range>[5.11,6)</org.wso2.carbon.identity.version.range>
+        <servlet-api.version>2.5</servlet-api.version>
+        <javax.servelet.jstl.version>1.2</javax.servelet.jstl.version>
+        <commons-codec.wso2.version>1.4.0.wso2v1</commons-codec.wso2.version>
+        <axiom.version>1.2.11-wso2v9</axiom.version>
+        <org.wso2.securevault.version>1.0.0-wso2v2</org.wso2.securevault.version>
+        <commons-codec.version>1.10</commons-codec.version>
+        <source.version>1.8</source.version>
+        <target.version>1.8</target.version>
+        <maven.compiler.plugin.version>2.3.2</maven.compiler.plugin.version>
+        <maven.war.plugin.version>2.2</maven.war.plugin.version>
     </properties>
-
 </project>
