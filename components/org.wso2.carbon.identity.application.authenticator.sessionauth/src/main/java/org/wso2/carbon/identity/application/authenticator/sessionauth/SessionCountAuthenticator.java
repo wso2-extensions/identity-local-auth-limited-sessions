@@ -47,7 +47,7 @@ import static java.lang.Integer.parseInt;
 import static org.wso2.carbon.identity.application.authenticator.sessionauth.util.AuthenticatorUtil.getSessionDetails;
 
 /**
- * Session count based authenticator
+ * Session count based authenticator.
  */
 public class SessionCountAuthenticator extends AbstractApplicationAuthenticator
         implements LocalApplicationAuthenticator {
@@ -88,7 +88,7 @@ public class SessionCountAuthenticator extends AbstractApplicationAuthenticator
 
     /**
      * This will gather information on exiting sessions of the current user trying to execute the authenticator and
-     * store them as metadata and redirect user to page to select sessions to termination
+     * store them as metadata and redirect user to page to select sessions to termination.
      *
      * @param response     the response
      * @param context      the authentication context
@@ -223,7 +223,7 @@ public class SessionCountAuthenticator extends AbstractApplicationAuthenticator
     }
 
     /**
-     * Method for retrieving selected session Ids from the parameter map
+     * Method for retrieving selected session Ids from the parameter map.
      *
      * @param parameterMap Map object of parameters
      * @return Array List of Session ID strings

@@ -43,7 +43,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 /**
- * Class for testing Authenticator
+ * Class for testing Authenticator.
  */
 public class AuthenticatorTest {
 
@@ -63,9 +63,7 @@ public class AuthenticatorTest {
     LocalApplicationAuthenticator localApplicationAuthenticator;
     @Mock
     AuthenticatorConfig authenticatorConfig;
-
     AuthenticationContext context = new AuthenticationContext();
-
     //method for setting up tests and mock objects
     @BeforeClass
     public void setup() {
@@ -129,5 +127,4 @@ public class AuthenticatorTest {
         when(authenticatorConfig.getApplicationAuthenticator()).thenReturn(localApplicationAuthenticator);
         sessionCountAuthenticator.process(request, response, context);
     }
-
 }

@@ -42,12 +42,12 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 /**
- * Contains Utility methods used in the Session Count Authenticator
+ * Contains Utility methods used in the Session Count Authenticator.
  */
 public class AuthenticatorUtil {
 
     /**
-     * Method to retrieve session data from session data source
+     * Method to retrieve session data from session data source.
      *
      * @param authenticatedUser AuthenticatedUser object that represent the user
      * @return JSON array with each element describing active session
@@ -83,7 +83,7 @@ public class AuthenticatorUtil {
     }
 
     /**
-     * Method to create HTTP Request
+     * Method to create HTTP Request.
      *
      * @param authenticatedUser AuthenticatedUser object for the user
      * @return HttpPost request object
@@ -116,7 +116,7 @@ public class AuthenticatorUtil {
     }
 
     /**
-     * Method for building the query to get data from the data service
+     * Method for building the query to get data from the data service.
      *
      * @param tenantDomain Tenant domain of the user
      * @param username     Username of the user
@@ -157,16 +157,7 @@ public class AuthenticatorUtil {
     }
 
     /**
-     * Method to create the query to pass to get session details
-     *
-     * @param tenantDomain tenant domain the user belong to
-     * @param username     username of the user
-     * @param userStore    userstore of the user
-     * @return Query string
-     */
-
-    /**
-     * Method to retrieve custom login page for the authenticator
+     * Method to retrieve custom login page for the authenticator.
      *
      * @return custom login page of authenticator
      */

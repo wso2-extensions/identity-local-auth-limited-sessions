@@ -41,14 +41,13 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 /**
- * Class for testing AuthenticatorUtil class
+ * Class for testing AuthenticatorUtil class.
  */
 
 public class AuthenticatorUtilTest {
 
     @Mock
     AuthenticatedUser authenticatedUserMock;
-
     //method for setting up tests and mock objects
     @BeforeClass
     public void setup() {
@@ -84,10 +83,8 @@ public class AuthenticatorUtilTest {
         byte[] encoding = org.apache.commons.codec.binary.Base64.encodeBase64(
                 toEncode.getBytes(Charset.forName(StandardCharsets.UTF_8.name())));
         String authHeader = new String(encoding, Charset.defaultCharset());
-
         httpPost = AuthenticatorUtil.setAuthorizationHeader(httpPost, username, password);
         Header header = httpPost.getFirstHeader(HTTPConstants.HEADER_AUTHORIZATION);
-
         Assert.assertEquals("Basic " + authHeader, header.getValue());
     }
 
@@ -105,5 +102,4 @@ public class AuthenticatorUtilTest {
 
         return new org.powermock.modules.testng.PowerMockObjectFactory();
     }
-
 }

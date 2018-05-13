@@ -18,7 +18,7 @@
 package org.wso2.carbon.identity.application.authenticator.sessionauth;
 
 /**
- * Constants used by the SessionCountAuthenticator
+ * Constants used by the SessionCountAuthenticator.
  */
 public abstract class SessionCountAuthenticatorConstants {
 

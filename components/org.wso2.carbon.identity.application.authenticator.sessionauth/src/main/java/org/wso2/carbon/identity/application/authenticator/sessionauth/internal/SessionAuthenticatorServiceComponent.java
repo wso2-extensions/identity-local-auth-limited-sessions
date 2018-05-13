@@ -27,7 +27,7 @@ import org.wso2.carbon.identity.application.authentication.framework.Application
 import org.wso2.carbon.identity.application.authenticator.sessionauth.SessionCountAuthenticator;
 
 /**
- * OSGI component for user's current active session count based authenticator
+ * OSGI component for user's current active session count based authenticator.
  */
 
 @Component(
@@ -37,10 +37,8 @@ import org.wso2.carbon.identity.application.authenticator.sessionauth.SessionCou
 public class SessionAuthenticatorServiceComponent {
 
     private static Log log = LogFactory.getLog(SessionAuthenticatorServiceComponent.class);
-
     @Activate
     protected void activate(ComponentContext ctxt) {
-
         try {
             SessionCountAuthenticator sessionCountAuthenticator = new SessionCountAuthenticator();
             ctxt.getBundleContext().registerService(ApplicationAuthenticator.class.getName(),
@@ -52,7 +50,6 @@ public class SessionAuthenticatorServiceComponent {
             log.error("SAMLSSO Authenticator bundle activation Failed", e);
         }
     }
-
     @Deactivate
     protected void deactivate(ComponentContext ctxt) {
 

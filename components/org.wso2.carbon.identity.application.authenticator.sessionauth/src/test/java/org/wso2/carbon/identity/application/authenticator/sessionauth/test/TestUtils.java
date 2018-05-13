@@ -21,7 +21,7 @@ package org.wso2.carbon.identity.application.authenticator.sessionauth.test;
 import org.apache.commons.lang.RandomStringUtils;
 
 /**
- * Utility methods required for testing
+ * Utility methods required for testing.
  */
 public class TestUtils {
 
@@ -29,5 +29,4 @@ public class TestUtils {
 
         return RandomStringUtils.random(size, useLetters, useNumbers);
     }
-
 }
