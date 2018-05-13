@@ -28,7 +28,6 @@ public class TestUtils {
     public static String getRandomString(int size, boolean useLetters, boolean useNumbers) {
 
         return RandomStringUtils.random(size, useLetters, useNumbers);
-
     }
 
 }
