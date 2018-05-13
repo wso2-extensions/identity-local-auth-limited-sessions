@@ -64,17 +64,17 @@ public class AuthenticatorUtil {
         JSONArray responseJsonArray;
         httpResponse = httpClient.execute(httpPost);
         if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-            BufferedReader bufferedReader;
-            bufferedReader = new BufferedReader(new InputStreamReader(httpResponse.getEntity()
+            try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(httpResponse.getEntity()
                     .getContent(),
-                    StandardCharsets.UTF_8.name()));
-            StringBuilder responseResult = new StringBuilder();
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                responseResult.append(line);
+                    StandardCharsets.UTF_8.name()))) {
+                StringBuilder responseResult = new StringBuilder();
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    responseResult.append(line);
+                }
+                responseJsonArray = new JSONArray(responseResult.toString());
             }
-            responseJsonArray = new JSONArray(responseResult.toString());
-            bufferedReader.close();
+
         } else {
             throw new SessionValidationException("Failed to retrieve data from endpoint. Error code :" +
                     httpResponse.getStatusLine().getStatusCode());
