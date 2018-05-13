@@ -3,6 +3,7 @@ function onInitialRequest(context) {
         id: '1',
         on: {
             success: function (context) {
+                var sessionIDName = "sessionID"
                 var sessionAttributeMap = {};
                 sessionAttributeMap["sessionLimit"] = "2";
                 var sessionData = getSessionData(context, sessionAttributeMap);
@@ -10,7 +11,7 @@ function onInitialRequest(context) {
                 Log.info("Active Session Count: " + SessionDataObject.length);
                 if (SessionDataObject.length > 0) {
                     var lastSession = SessionDataObject[SessionDataObject.length - 1];
-                    var terminationRequestParameters = {"sessionID": lastSession["sessionID"]}
+                    var terminationRequestParameters = {sessionIDName: lastSession[sessionIDName]}
                     killSession(context, terminationRequestParameters);
                 }
 
