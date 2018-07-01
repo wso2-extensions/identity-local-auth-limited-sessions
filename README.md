@@ -20,26 +20,23 @@ Active session count based authenticator can be used with WSO2 Identity Server t
 
 ## Sample
 This sample describes how this authenticator can be used to limit user session count with the help of [Conditional Authentication Functions](https://github.com/wso2-extensions/identity-conditional-auth-functions). Use the below conditional authentication script.
+
 <code>
-
 function onInitialRequest(context) {
-    executeStep({
-
-        id: '1',
-
-        on: {
-            success: function (context) {
-                var isAllowed = isWithinSessionLimit(context, {"sessionLimit":"2"});
-                if (isAllowed) {
-                    Log.info('Authentication Successfull ');
-                }
-                else {
-                    executeStep({id: '2'});
-                    Log.info('Authentication Successfull ')
-                }
+   executeStep(1, {
+   
+       onSuccess: function (context) {
+           var isAllowed = isWithinSessionLimit(context, {"sessionLimit":"2"});
+            if (isAllowed) {
+                Log.info('Authentication Successfull ');
             }
-        }
-    });}
+            else {
+                executeStep(2);
+                Log.info('Authentication Successfull ');
+            }
+       }
+   });
+}
 </code>
 
 Please note that in here ID 1 is the Basic Authenticator and ID 2 is the sessionCount Authenticator
