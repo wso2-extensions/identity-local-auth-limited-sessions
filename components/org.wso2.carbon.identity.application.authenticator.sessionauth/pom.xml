@@ -147,21 +147,7 @@
                             org.json;version="${org.json.version.range}",
                             org.osgi.framework;version="${org.osgi.framework.version.range}",
                             org.osgi.service.component;version="${org.osgi.service.component.version.range}",
-                            org.wso2.carbon.identity.application.authentication.framework;
-                            version="${org.wso2.carbon.identity.version.range}",
-                            org.wso2.carbon.identity.application.authentication.framework.config;
-                            version="${org.wso2.carbon.identity.version.range}",
-                            org.wso2.carbon.identity.application.authentication.framework.config.model;
-                            version="${org.wso2.carbon.identity.version.range}",
-                            org.wso2.carbon.identity.application.authentication.framework.context;
-                            version="${org.wso2.carbon.identity.version.range}",
-                            org.wso2.carbon.identity.application.authentication.framework.exception;
-                            version="${org.wso2.carbon.identity.version.range}",
-                            org.wso2.carbon.identity.application.authentication.framework.model;
-                            version="${org.wso2.carbon.identity.version.range}",
-                            org.wso2.carbon.identity.application.authentication.framework.services;
-                            version="${org.wso2.carbon.identity.version.range}",
-                            org.wso2.carbon.identity.application.authentication.framework.util;
+                            org.wso2.carbon.identity.application.authentication.framework.*;
                             version="${org.wso2.carbon.identity.version.range}",
                             org.wso2.carbon.identity.core.util;
                             version="${org.wso2.carbon.identity.version.range}"
