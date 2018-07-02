@@ -44,7 +44,7 @@ public class SessionAuthenticatorServiceComponent {
             ctxt.getBundleContext().registerService(ApplicationAuthenticator.class.getName(),
                     sessionCountAuthenticator, null);
             if (log.isDebugEnabled()) {
-                log.info("SessionCountAuthenticator bundle is activated");
+                log.debug("SessionCountAuthenticator bundle is activated");
             }
         } catch (Throwable e) {
             log.error("SAMLSSO Authenticator bundle activation Failed", e);
@@ -54,7 +54,7 @@ public class SessionAuthenticatorServiceComponent {
     protected void deactivate(ComponentContext ctxt) {
 
         if (log.isDebugEnabled()) {
-            log.info("SessionCountAuthenticator bundle is deactivated");
+            log.debug("SessionCountAuthenticator bundle is deactivated");
         }
     }
 }
