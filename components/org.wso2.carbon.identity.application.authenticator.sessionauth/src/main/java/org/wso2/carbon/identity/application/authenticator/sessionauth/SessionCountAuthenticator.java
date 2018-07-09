@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
@@ -183,7 +184,7 @@ public class SessionCountAuthenticator extends AbstractApplicationAuthenticator
         int activeSessionCount = parseInt(request.getParameter(SessionCountAuthenticatorConstants
                 .ACTIVE_SESSION_COUNT_TAG));
         SessionManagementService sessionManagementService = new SessionManagementService();
-        ArrayList<String> sessionIDList = getSelectedSessionIDs(request.getParameterMap());
+        List<String> sessionIDList = getSelectedSessionIDs(request.getParameterMap());
         for (String sessionId : sessionIDList) {
             boolean isRemoved = sessionManagementService.removeSession(sessionId);
             if (isRemoved) {
@@ -229,7 +230,7 @@ public class SessionCountAuthenticator extends AbstractApplicationAuthenticator
      * @param parameterMap Map object of parameters
      * @return Array List of Session ID strings
      */
-    private ArrayList<String> getSelectedSessionIDs(Map<String, String[]> parameterMap) {
+    private List<String> getSelectedSessionIDs(Map<String, String[]> parameterMap) {
 
         Set<String> keySet = parameterMap.keySet();
         ArrayList<String> sessionIdList = new ArrayList<>();
