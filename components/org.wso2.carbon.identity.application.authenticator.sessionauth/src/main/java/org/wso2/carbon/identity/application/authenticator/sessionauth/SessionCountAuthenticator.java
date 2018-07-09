@@ -98,10 +98,16 @@ public class SessionCountAuthenticator extends AbstractApplicationAuthenticator
     private AuthenticatorFlowStatus initiateAuthRequest(HttpServletResponse response, AuthenticationContext context,
                                                         String errorMessage) throws AuthenticationFailedException {
 
+        AuthenticatedUser authenticatedUser = null;
+        StepConfig stepConfig = null;
         //Identifying the authenticated user from the previous step
-        StepConfig stepConfig = context.getSequenceConfig().getStepMap().get(context.getCurrentStep() - 1);
-        AuthenticatedUser authenticatedUser = stepConfig.getAuthenticatedUser();
-        if (authenticatedUser == null) {
+        try {
+            stepConfig = context.getSequenceConfig().getStepMap().get(context.getCurrentStep() - 1);
+            authenticatedUser = stepConfig.getAuthenticatedUser();
+        } catch (NullPointerException e) {
+            throw new AuthenticationFailedException("Failed to identify the previous authentication step",e);
+        }
+        if (stepConfig == null || authenticatedUser == null ) {
             throw new AuthenticationFailedException("Authentication failed!. Failed to identify the user");
         }
         if (stepConfig.getAuthenticatedAutenticator().getApplicationAuthenticator() instanceof
