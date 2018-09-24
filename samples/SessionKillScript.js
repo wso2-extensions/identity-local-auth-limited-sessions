@@ -14,8 +14,6 @@ function onInitialRequest(context) {
                     var terminationRequestParameters = {sessionIDName: lastSession[sessionIDName]}
                     killSession(context, terminationRequestParameters);
                 }
-
-
             }
         }
     });
