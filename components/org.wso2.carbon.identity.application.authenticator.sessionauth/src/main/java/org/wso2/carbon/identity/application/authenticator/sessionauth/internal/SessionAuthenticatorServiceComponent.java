@@ -36,7 +36,7 @@ import org.wso2.carbon.identity.application.authenticator.sessionauth.SessionCou
 )
 public class SessionAuthenticatorServiceComponent {
 
-    private static Log log = LogFactory.getLog(SessionAuthenticatorServiceComponent.class);
+    private static final Log log = LogFactory.getLog(SessionAuthenticatorServiceComponent.class);
     @Activate
     protected void activate(ComponentContext ctxt) {
         try {
