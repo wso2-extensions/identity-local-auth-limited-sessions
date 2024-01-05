@@ -306,7 +306,7 @@
         <commons-codec.version>1.10</commons-codec.version>
         <maven.scr.plugin.version>1.24.0</maven.scr.plugin.version>
         <carbon.identity.package.import.version.range>[5.0.0, 6.0.0)</carbon.identity.package.import.version.range>
-        <carbon.identity.framework.version>5.11.181</carbon.identity.framework.version>
+        <carbon.identity.framework.version>5.20.254</carbon.identity.framework.version>
         <carbon.analytics-common.version>5.0.11</carbon.analytics-common.version>
         <carbon.p2.plugin.version>1.5.3</carbon.p2.plugin.version>
         <maven.buildnumber.plugin.version>1.4</maven.buildnumber.plugin.version>
